@@ -15,23 +15,24 @@ export const revalidate = 30;
 
 export const generateStaticParams = async () => {
   const query = groq`*[_type == 'post']{
-    slug
+    "slug": slug.current
   }`;
 
   const posts: Post[] = await client.fetch(query);
-  
+
   return posts.map((post) => ({
-    slug: post.slug.current
+    slug: post.slug, // Ensure slug is directly returned as a string
   }));
 };
 
-interface slug {
+// Define a type for the dynamic route parameters
+interface BlogPageProps {
   params: {
-    slug: string;
+    slug: string; // Ensure this matches the generated params structure
   };
 }
 
-async function BlogPage({ params }: slug) {
+async function BlogPage({ params }: BlogPageProps) {
   const query = groq`*[_type == 'post' && slug.current == $slug][0]{
     ...,
     body,
@@ -39,7 +40,7 @@ async function BlogPage({ params }: slug) {
   }`;
 
   const post: Post = await client.fetch(query, {
-    slug: params.slug
+    slug: params.slug,
   });
 
   return (
