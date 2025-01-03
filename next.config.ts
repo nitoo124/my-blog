@@ -1,11 +1,12 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
+const nextConfig: NextConfig = [{
 
-  estlint:{
-    ignoreDuringBuilds:true,
-
+  eslint:{
+    ignoreDuringBuilds:true
   },
+
+ 
 
   /* config options here */
   images: {remotePatterns:[
@@ -15,6 +16,6 @@ const nextConfig: NextConfig = {
       pathname: "**",
     }
   ]}
-};
+}];
 
 export default nextConfig;
